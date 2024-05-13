@@ -1,10 +1,11 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod node_module_search;
+use node_module_search::list_node_modules;
+
 use tauri::Manager;
 use window_shadows::set_shadow;
-use window_vibrancy::apply_blur;
-
 
 fn main() {
     tauri::Builder::default()
@@ -14,14 +15,11 @@ fn main() {
             #[cfg(any(windows, target_os = "macos"))]
             set_shadow(&window, true).unwrap();
 
-            #[cfg(target_os = "windows")]
-            {
-                apply_blur(&window, Some((18, 18, 18, 125)))
-                    .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
-            }
-            
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![
+            list_node_modules
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

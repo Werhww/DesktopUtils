@@ -23,7 +23,7 @@ const simple = [
 ]
 
 async function searchTest() {
-	const test = await invoke("test")
+	const test = await invoke("list_node_modules")
 	console.log(test)
 }
 </script>
