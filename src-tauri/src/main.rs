@@ -4,6 +4,9 @@
 mod node_module_search;
 use node_module_search::list_node_modules;
 
+mod utils;
+use utils::folder_size;
+
 use tauri::Manager;
 use window_shadows::set_shadow;
 
@@ -18,7 +21,8 @@ fn main() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            list_node_modules
+            list_node_modules,
+            folder_size
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -2,27 +2,55 @@
 import { invoke } from "@tauri-apps/api/tauri"
 import FolderSearch from "@/assets/svg/folder-search.svg"
 
-const ticked = ref([])
+const ticked = ref<string[]>([])
 const expanded = ref([])
 
-const node_modules_tree = ref<any[]>([])
+interface NodeModule {
+	label: string
+	icon: string
+	children: NodeModule[]
+}
+
+const node_modules_tree = ref<NodeModule[]>([])
+
+interface NodeModuleInfo {
+	label: string
+	path: string
+	size: number
+}
+
+const node_modules_info = ref<NodeModuleInfo[]>([])
 
 async function searchTest() {
 	const node_modules = await invoke("list_node_modules") as string[]
-	console.log(node_modules)
 	let tree: any[] = []
 
-	node_modules.forEach((path) => {
+	node_modules.forEach((path, bigIndex) => {
 		const pathArr = path.split(/[\\\/]/)
 		let current: any = tree
+
+		const name = `${pathArr[pathArr.length - 2]}#--#${bigIndex}`
+		invoke("folder_size", { path }).then((size: any) => {
+			const folder_index = node_modules_info.value.findIndex(folder => folder.label === name)
+			node_modules_info.value[folder_index].size = size
+		})
+
+
+
+		node_modules_info.value.push({
+			label: name,
+			path: path,
+			size: 0
+		})
+
+		ticked.value.push(name)
 
 		pathArr.forEach((folder, index) => {
 			if(folder === "node_modules") return
 
 			if (!current.find((node: any) => node.label === folder)) {
 				const content = index === pathArr.length - 2 ? {
-					label: folder,
-					folderPath: path,
+					label: `${folder}#--#${bigIndex}`,
 					icon: "folder",
 				} : index === 0 ? {
 					label: folder,
@@ -42,13 +70,42 @@ async function searchTest() {
 		})
 	})
 
-	console.log(tree)
 	node_modules_tree.value = tree
 }
 
-watchEffect(() => {
-	console.log("checked: ", ticked.value)
-	console.log("expaneded: ", expanded.value)
+const ticked_folder_count = computed(() => {
+	const node_modules = node_modules_info.value.length
+	if(node_modules === 0) return "?"
+	return `${ticked.value.length} / ${node_modules_info.value.length}`
+})
+
+const ticked_folder_size = computed(() => {	
+	const node_modules = node_modules_info.value
+	if(node_modules.length === 0) return "?"
+
+
+	let ticked_folders: NodeModuleInfo[] = []
+
+	for(const folder_name of ticked.value) {
+		const folder = node_modules.find(folder => folder.label === folder_name)
+		if(folder) ticked_folders.push(folder)
+	}
+
+
+	const ticked_size = ticked_folders.reduce((acc, folder) => acc + folder.size, 0)
+	const full_size = node_modules.reduce((acc, folder) => acc + folder.size, 0)
+
+	let size_type = "MB"
+	let full_size_formated = full_size / 1024 / 1024
+	
+	if(full_size_formated > 1024) {
+		size_type = "GB"
+		full_size_formated = full_size_formated / 1024
+	}
+	
+	let ticked_size_formated = size_type === "MB" ? ticked_size / 1024 / 1024 : ticked_size / 1024 / 1024 / 1024
+
+	return `${ticked_size_formated.toFixed(size_type == "MB" ? 0 : 2)} / ${full_size_formated.toFixed(size_type == "MB" ? 0 : 2)} ${size_type}`
 })
 
 </script>
@@ -58,7 +115,7 @@ watchEffect(() => {
 	<div>
 		<QChip
 			icon="folder_copy"
-			label="?"
+			:label="ticked_folder_count"
 			color="white"
 			text-color="primary"
 			class="text-weight-bold"
@@ -67,7 +124,7 @@ watchEffect(() => {
 		/>
 		<QChip
 			icon="sym_r_storage"
-			label="?"
+			:label="ticked_folder_size"
 			color="white"
 			text-color="primary"
 			class="text-weight-bold"
@@ -89,7 +146,7 @@ watchEffect(() => {
 	>
 		<template v-slot:default-header="prop">
 			<QIcon :name="prop.node.icon"/>
-			<div class="q-pl-xs">{{ prop.node.label }}</div>
+			<div class="q-pl-xs">{{ prop.node.label.split("#--#")[0] }}</div>
 			
 		</template>
 
