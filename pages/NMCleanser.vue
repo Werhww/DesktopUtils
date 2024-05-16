@@ -1,7 +1,44 @@
 <script setup lang="ts">
 import { invoke } from "@tauri-apps/api/tauri"
 import FolderSearch from "@/assets/svg/folder-search.svg"
+import { useStorage } from '@vueuse/core'
 
+interface SkippedFolder {
+	name: string
+	active: boolean
+}
+
+interface SkippedFolderListProps {
+	defaults: SkippedFolder[]
+	custom: SkippedFolder[]
+}
+
+const skipped_folders = useStorage<SkippedFolderListProps>("skipped_folders", { 
+	defaults: [
+		{
+			name: ".vscode",
+			active: true,
+		},
+		{
+			name: "AppData",
+			active: true,
+		},
+		{
+			name: "Program Files",
+			active: true,
+		},
+		{
+			name: "$RECYCLE.BIN",
+			active: true,
+		},
+		{
+			name: "$Recycle.Bin",
+			active: true,
+		}
+	],
+
+	custom: []
+}) 
 const ticked = ref<string[]>([])
 const expanded = ref([])
 
@@ -21,7 +58,7 @@ interface NodeModuleInfo {
 
 const node_modules_info = ref<NodeModuleInfo[]>([])
 
-async function searchTest() {
+async function getFolders() {
 	const node_modules = await invoke("list_node_modules") as string[]
 	let tree: any[] = []
 
@@ -98,7 +135,7 @@ const ticked_folder_size = computed(() => {
 	let size_type = "MB"
 	let full_size_formated = full_size / 1024 / 1024
 	
-	if(full_size_formated > 1024) {
+	if(full_size_formated > 1024 * 2) {
 		size_type = "GB"
 		full_size_formated = full_size_formated / 1024
 	}
@@ -107,11 +144,12 @@ const ticked_folder_size = computed(() => {
 
 	return `${ticked_size_formated.toFixed(size_type == "MB" ? 0 : 2)} / ${full_size_formated.toFixed(size_type == "MB" ? 0 : 2)} ${size_type}`
 })
-
 </script>
 
 <template>
-	<div class="text-h5 nico-moji">Node Module Cleanser</div>
+	<div class="text-h5 nico-moji" @click="() => {
+		console.log(skipped_folders)
+	}">Node Module Cleanser</div>
 	<div>
 		<QChip
 			icon="folder_copy"
@@ -132,7 +170,19 @@ const ticked_folder_size = computed(() => {
 			style="min-width: 3.5rem"
 		/>
 		<QBtn icon="delete" dense flat rounded />
-		<QBtn :icon="`img:${FolderSearch}`" dense flat rounded @click="searchTest" />
+		<QBtn :icon="`img:${FolderSearch}`" dense flat rounded @click="getFolders" />
+		<QBtn icon="settings" dense flat rounded>
+			<QMenu>
+				<QCard dense>
+					<QCardSection>
+						<NMCleanserSkippedFolderList />
+					</QCardSection>
+					<QCardSection>
+						
+					</QCardSection>
+				</QCard>
+			</QMenu>
+		</QBtn>
 	</div>
 	<QTree
 		class="col-12 col-sm-6"

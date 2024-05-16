@@ -12,6 +12,8 @@
   "dependencies": {
     "@quasar/extras": "^1.16.11",
     "@tauri-apps/api": "^1.5.4",
+    "@vueuse/core": "^10.9.0",
+    "@vueuse/nuxt": "^10.9.0",
     "nuxt": "^3.11.2",
     "nuxt-quasar-ui": "^2.1.1",
     "quasar": "^2.15.4",

@@ -28,7 +28,10 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["nuxt-quasar-ui"],
+  modules: [
+    "nuxt-quasar-ui",
+    "@vueuse/nuxt"
+  ],
 
   quasar: {
     iconSet: "material-symbols-rounded",
