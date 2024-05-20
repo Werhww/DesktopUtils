@@ -58,8 +58,13 @@ interface NodeModuleInfo {
 
 const node_modules_info = ref<NodeModuleInfo[]>([])
 
+
+
 async function getFolders() {
-	const node_modules = await invoke("list_node_modules") as string[]
+	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkippedFolders() }).catch((error) => {
+		console.error(error)
+		return ["error"]
+	}) as string[]
 	let tree: any[] = []
 
 	node_modules.forEach((path, bigIndex) => {
@@ -108,6 +113,20 @@ async function getFolders() {
 	})
 
 	node_modules_tree.value = tree
+}
+
+function getSkippedFolders() {
+	let skipped_folder_names = []
+
+	for(const folder of skipped_folders.value.defaults) {
+		if(folder.active) skipped_folder_names.push(folder.name)
+	}
+
+	for(const folder of skipped_folders.value.custom) {
+		if(folder.active) skipped_folder_names.push(folder.name)
+	}
+
+	return skipped_folder_names
 }
 
 const ticked_folder_count = computed(() => {
@@ -173,14 +192,7 @@ const ticked_folder_size = computed(() => {
 		<QBtn :icon="`img:${FolderSearch}`" dense flat rounded @click="getFolders" />
 		<QBtn icon="settings" dense flat rounded>
 			<QMenu>
-				<QCard dense>
-					<QCardSection>
-						<NMCleanserSkippedFolderList />
-					</QCardSection>
-					<QCardSection>
-						
-					</QCardSection>
-				</QCard>
+				<NMCleanserSkippedFolderList v-model="skipped_folders" />
 			</QMenu>
 		</QBtn>
 	</div>

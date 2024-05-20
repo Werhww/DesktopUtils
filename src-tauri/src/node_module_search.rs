@@ -32,7 +32,7 @@ fn is_node_modules(entry: &DirEntry) -> bool {
     false
 }
 
-fn find_node_modules(paths_to_skip: &[&str]) -> Vec<String> {
+fn find_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
     let mut file_paths = Vec::new();
 
     let directorys = list_disks();
@@ -40,11 +40,11 @@ fn find_node_modules(paths_to_skip: &[&str]) -> Vec<String> {
     for directory in directorys {
         for entry in WalkDir::new(directory)
         .into_iter()
-        .filter_entry(|e| !paths_to_skip.iter().any(|&path| e.path().to_string_lossy().contains(path)))
+        .filter_entry(|e| !paths_to_skip.contains(&e.path().display().to_string()))
         .filter_map(Result::ok)
         .filter(is_node_modules) {
         println!("{}", entry.path().display());
-        file_paths.push(entry.path().display().to_string());
+            file_paths.push(entry.path().display().to_string());
         }
     }
 
@@ -52,11 +52,10 @@ fn find_node_modules(paths_to_skip: &[&str]) -> Vec<String> {
 }
 
 #[tauri::command]
-pub fn list_node_modules() -> Vec<String> {
+pub fn list_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
     let start_time = Instant::now();
     println!("=> node_modules:");
-    let paths_to_skip = vec![".vscode", "AppData", "nodejs", "Program Files", "$RECYCLE.BIN", "$Recycle.Bin"];
-    let paths = find_node_modules(&paths_to_skip);
+    let paths = find_node_modules(paths_to_skip);
     let end_time = Instant::now();
     println!("Elapsed time: {:?}", end_time - start_time);
 
