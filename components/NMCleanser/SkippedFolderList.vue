@@ -16,7 +16,9 @@ const skipped_folders = defineModel<SkippedFolderListProps>({ required: true })
 <template>
 <QList>
 	<QItem dense>
-		<QItemSection class="text-h6">Skipped Folders</QItemSection>
+		<QItemSection class="text-h6" style="width:min-content;">
+			Skipped Folders
+		</QItemSection>
 	</QItem>
 	<QItem dense>
 		<QItemSection class="text-overline">Defaults folders</QItemSection>

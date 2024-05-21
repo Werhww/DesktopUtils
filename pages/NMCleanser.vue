@@ -4,6 +4,7 @@ import FolderSearch from "@/assets/svg/folder-search.svg"
 import { useStorage } from '@vueuse/core'
 import {
   Loading,
+  Notify,
   QSpinnerGears
 } from 'quasar'
 
@@ -67,7 +68,6 @@ interface NodeModuleInfo {
 const node_modules_info = ref<NodeModuleInfo[]>([])
 
 
-
 async function getFolders() {
 
 	Loading.show({
@@ -75,9 +75,18 @@ async function getFolders() {
 	})
 
 	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkippedFolders() }).catch((error) => {
-		console.error(error)
+		Loading.hide()
+		Notify.create({
+			message: error,
+			color: "negative",
+			position: "top",
+			icon: "error"
+		})
+
 		return ["error"]
 	}) as string[]
+	if(node_modules[0] === "error") return
+
 	let tree: any[] = []
 
 	node_modules_info.value = []
@@ -94,8 +103,6 @@ async function getFolders() {
 			const folder_index = node_modules_info.value.findIndex(folder => folder.label === name)
 			node_modules_info.value[folder_index].size = size
 		})
-
-
 
 		node_modules_info.value.push({
 			label: name,
@@ -126,12 +133,20 @@ async function getFolders() {
 			if (index !== pathArr.length - 2) {
 				current = current.find((node: any) => node.label === folder).children
 			}
-
 		})
 	})
 
 	node_modules_tree.value = tree
 	Loading.hide()
+
+	if(tree.length == 0) {
+		Notify.create({
+			message: "No node_modules folders found",
+			color: "warning",
+			position: "top",
+			icon: "warning"
+		})
+	}
 }
 
 function getSkippedFolders() {
@@ -183,9 +198,69 @@ const ticked_folder_size = computed(() => {
 	return `${ticked_size_formated.toFixed(size_type == "MB" ? 0 : 2)} / ${full_size_formated.toFixed(size_type == "MB" ? 0 : 2)} ${size_type}`
 })
 
-function deleteFolders() {
-	const folders = ticked.value.map(folder => node_modules_info.value.find(node => node.label === folder)?.path)
-	console.log(folders)
+async function deleteFolders() {
+
+	if(ticked.value.length == 0) {
+		return Notify.create({
+			message: "No folders selected",
+			color: "negative",
+			position: "top",
+			icon: "error"
+		})
+	}
+
+	Loading.show({
+		spinner: QSpinnerGears,
+	})
+
+	const folders = ticked.value.map(folder => {
+		const folder_info = node_modules_info.value.find(node => node.label === folder)
+		return {
+			path: folder_info?.path || "",
+			label: folder_info?.label|| ""
+		}
+
+	})
+
+	for(const item of folders) {
+		const completed = await invoke("delete_folder", { path: item.path }) as boolean
+		if(!completed) {
+			Notify.create({
+				message: `Failed to delete ${item.label}`,
+				color: "negative",
+				position: "top",
+				icon: "error"
+			})
+			continue
+		}
+
+ 		removeNodeModuleByLabel(node_modules_tree.value, item.label)
+		const index = node_modules_info.value.findIndex(node => node.label === item.label)
+		node_modules_info.value.splice(index, 1)
+
+		const ticked_index = ticked.value.findIndex(ticked_folder => ticked_folder === item.label)
+		ticked.value.splice(ticked_index, 1)
+	}
+
+	Loading.hide()
+}
+
+function removeNodeModuleByLabel(tree: NodeModule[], targetLabel: string): boolean {
+    if (!tree || !tree.length) return false
+
+    for (let i = 0; i < tree.length; i++) {
+		const node = tree[i]
+
+        if (node.label === targetLabel) {
+            tree.splice(i, 1);
+			return true
+        }
+
+        const foundInChildren = removeNodeModuleByLabel(node.children, targetLabel);
+		if (foundInChildren) return true
+    }
+
+    return false
 }
 </script>
 
@@ -212,8 +287,12 @@ function deleteFolders() {
 			size="md"
 			style="min-width: 3.5rem"
 		/>
-		<QBtn icon="delete" dense flat rounded @click="deleteFolders" />
-		<QBtn :icon="`img:${FolderSearch}`" dense flat rounded @click="getFolders" />
+		<QBtn icon="delete" dense flat rounded @click="deleteFolders" >
+			<QTooltip>Remove selected folders</QTooltip>
+		</QBtn>
+		<QBtn :icon="`img:${FolderSearch}`" dense flat rounded @click="getFolders" >
+			<QTooltip>Search for node_modules folders</QTooltip>
+		</QBtn>
 		<QBtn icon="settings" dense flat rounded>
 			<QMenu>
 				<NMCleanserSkippedFolderList v-model="skipped_folders" />

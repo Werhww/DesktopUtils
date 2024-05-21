@@ -1,5 +1,6 @@
 extern crate fs_extra;
 use fs_extra::dir::get_size;
+use std::fs::remove_dir_all;
 
 #[tauri::command]
 pub fn folder_size(path: &str) -> u64 {
@@ -13,7 +14,7 @@ pub fn folder_size(path: &str) -> u64 {
 
 #[tauri::command]
 pub fn delete_folder(path: &str) -> bool {
-    let result = fs_extra::dir::remove(path);
+    let result = remove_dir_all(path);
     match result {
         Ok(_) => {
             println!("Folder deleted: {}", path);
