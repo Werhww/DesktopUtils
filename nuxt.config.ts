@@ -34,6 +34,10 @@ export default defineNuxtConfig({
   ],
 
   quasar: {
+    plugins: [
+      "Loading"
+    ],
+
     iconSet: "material-symbols-rounded",
     extras: {
       fontIcons: [

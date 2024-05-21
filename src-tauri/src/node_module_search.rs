@@ -32,15 +32,18 @@ fn is_node_modules(entry: &DirEntry) -> bool {
     false
 }
 
+
 fn find_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
     let mut file_paths = Vec::new();
-
+ 
     let directorys = list_disks();
 
     for directory in directorys {
         for entry in WalkDir::new(directory)
         .into_iter()
-        .filter_entry(|e| !paths_to_skip.contains(&e.path().display().to_string()))
+        .filter_entry(|e| -> bool {
+            !paths_to_skip.contains(&e.path().file_name().unwrap_or(std::ffi::OsStr::new("")).to_string_lossy().to_string())
+        })
         .filter_map(Result::ok)
         .filter(is_node_modules) {
         println!("{}", entry.path().display());

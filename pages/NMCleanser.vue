@@ -2,6 +2,10 @@
 import { invoke } from "@tauri-apps/api/tauri"
 import FolderSearch from "@/assets/svg/folder-search.svg"
 import { useStorage } from '@vueuse/core'
+import {
+  Loading,
+  QSpinnerGears
+} from 'quasar'
 
 interface SkippedFolder {
 	name: string
@@ -34,6 +38,10 @@ const skipped_folders = useStorage<SkippedFolderListProps>("skipped_folders", {
 		{
 			name: "$Recycle.Bin",
 			active: true,
+		},
+		{
+			name: "NVIDIA Corporation",
+			active: true,
 		}
 	],
 
@@ -61,11 +69,21 @@ const node_modules_info = ref<NodeModuleInfo[]>([])
 
 
 async function getFolders() {
+
+	Loading.show({
+		spinner: QSpinnerGears,
+	})
+
 	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkippedFolders() }).catch((error) => {
 		console.error(error)
 		return ["error"]
 	}) as string[]
 	let tree: any[] = []
+
+	node_modules_info.value = []
+	node_modules_tree.value = []
+	ticked.value = []
+	expanded.value = []
 
 	node_modules.forEach((path, bigIndex) => {
 		const pathArr = path.split(/[\\\/]/)
@@ -113,6 +131,7 @@ async function getFolders() {
 	})
 
 	node_modules_tree.value = tree
+	Loading.hide()
 }
 
 function getSkippedFolders() {
@@ -163,6 +182,11 @@ const ticked_folder_size = computed(() => {
 
 	return `${ticked_size_formated.toFixed(size_type == "MB" ? 0 : 2)} / ${full_size_formated.toFixed(size_type == "MB" ? 0 : 2)} ${size_type}`
 })
+
+function deleteFolders() {
+	const folders = ticked.value.map(folder => node_modules_info.value.find(node => node.label === folder)?.path)
+	console.log(folders)
+}
 </script>
 
 <template>
@@ -188,7 +212,7 @@ const ticked_folder_size = computed(() => {
 			size="md"
 			style="min-width: 3.5rem"
 		/>
-		<QBtn icon="delete" dense flat rounded />
+		<QBtn icon="delete" dense flat rounded @click="deleteFolders" />
 		<QBtn :icon="`img:${FolderSearch}`" dense flat rounded @click="getFolders" />
 		<QBtn icon="settings" dense flat rounded>
 			<QMenu>
