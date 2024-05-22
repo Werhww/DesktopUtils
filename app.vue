@@ -53,6 +53,27 @@ const miniState = ref(true)
 					</template>
 				</UtilDrawerButton>
 
+				<UtilDrawerButton
+					to="/JavascriptProjectManager"
+				
+					labelFont="nico-moji"
+
+					customIcon
+				>
+					<template #icon>
+						<QIcon name="sym_r_manage_accounts" class="q-pt-xs" size="md" color="blue-10">
+							<QBadge class="q-pa-none" style="background: none;"  floating><QIcon color="blue-10" name="javascript" size="sm"/></QBadge>
+						</QIcon>
+					</template>
+
+					<template #label>
+						<QItemSection class="column no-wrap text-h5 text-white jacquard24 text-center">
+							<QItemLabel class="text-no-wrap">Javascript</QItemLabel>
+							<QItemLabel style="margin: 0;">Manager</QItemLabel>
+						</QItemSection>
+					</template>
+				</UtilDrawerButton>
+
 			</QList>
 	</QDrawer>
 

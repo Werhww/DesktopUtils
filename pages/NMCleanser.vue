@@ -33,6 +33,10 @@ const skipped_folders = useStorage<SkippedFolderListProps>("skipped_folders", {
 			active: true,
 		},
 		{
+			name: "Program Files (x86)",
+			active: true,
+		},
+		{
 			name: "$RECYCLE.BIN",
 			active: true,
 		},
@@ -70,9 +74,16 @@ const node_modules_info = ref<NodeModuleInfo[]>([])
 
 async function getFolders() {
 
-	Loading.show({
+	const loadingTimer = Loading.show({
 		spinner: QSpinnerGears,
 	})
+
+	let secondsTimer = 0
+	const interval = setInterval(() => {
+		secondsTimer += 0.1
+		loadingTimer({ message: `Searching for node_modules folders... ${secondsTimer.toFixed(1)}s` })
+	}, 100)
+
 
 	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkippedFolders() }).catch((error) => {
 		Loading.hide()
@@ -137,6 +148,8 @@ async function getFolders() {
 	})
 
 	node_modules_tree.value = tree
+
+	clearInterval(interval)
 	Loading.hide()
 
 	if(tree.length == 0) {
@@ -265,9 +278,7 @@ function removeNodeModuleByLabel(tree: NodeModule[], targetLabel: string): boole
 </script>
 
 <template>
-	<div class="text-h5 nico-moji" @click="() => {
-		console.log(skipped_folders)
-	}">Node Module Cleanser</div>
+	<div class="text-h5 nico-moji">Node Module Cleanser</div>
 	<div>
 		<QChip
 			icon="folder_copy"

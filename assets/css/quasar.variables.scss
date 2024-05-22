@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@font-face {
+  font-family: 'Inter';
+  src: url(./fonts/Inter-VariableFont_slnt\,wght.ttf);
+}
+
 $typography-font-family: 'Inter', sans-serif;
+
 
 @font-face {
   font-family: "Nico Moji";
@@ -8,4 +13,23 @@ $typography-font-family: 'Inter', sans-serif;
 
 .nico-moji {
   font-family: "Nico Moji";
+}
+
+
+@font-face {
+  font-family: 'Jacquarda Bastarda';
+  src: url(./fonts/JacquardaBastarda9Charted-Regular.ttf);
+}
+
+.jacquarda-bastarda {
+  font-family: 'Jacquarda Bastarda';
+}
+
+@font-face {
+  font-family: "Jacquard24";
+  src: url(./fonts/Jacquard24-Regular.ttf);
+}
+
+.jacquard24 {
+  font-family: "Jacquard24";
 }
