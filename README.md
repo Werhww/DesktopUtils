@@ -109,7 +109,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ X ] Node Modules Cleanser 
+- [X] Node Modules Cleanser 
 - [ ] Javascript Manager
 
 
