@@ -1,75 +1,197 @@
-# Nuxt 3 Minimal Starter
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<a name="readme-top"></a>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
 
-Make sure to install the dependencies:
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-```bash
-# npm
-npm install
 
-# pnpm
-pnpm install
 
-# yarn
-yarn install
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/Werhww/DesktopUtils">
+    <img src="https://raw.githubusercontent.com/Werhww/DesktopUtils/main/src-tauri/icons/icon.png" alt="Logo" width="80" height="80">
+  </a>
 
-# bun
-bun install
-```
+<h3 align="center">DesktopUtils</h3>
 
-## Development Server
+  <p align="center">
+    Multiple tools to make the developer's life better
+    <br />
+    <a href="https://github.com/Werhww/DesktopUtils"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a >View Demo</a>
+    ·
+    <a href="https://github.com/Werhww/DesktopUtils/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    ·
+    <a href="https://github.com/Werhww/DesktopUtils/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
 
-Start the development server on `http://localhost:3000`:
 
-```bash
-# npm
-npm run dev
 
-# pnpm
-pnpm run dev
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-# yarn
-yarn dev
 
-# bun
-bun run dev
-```
 
-## Production
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Build the application for production:
+[![Product Name Screen Shot][product-screenshot]](https://github.com/Werhww/DesktopUtils/releases)
 
-```bash
-# npm
-npm run build
+Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `Werhww`, `DesktopUtils`, `twitter_handle`, `linkedin_username`, `gmail`, `kleppeleo`, `project_title`, `project_description`
 
-# pnpm
-pnpm run build
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-# yarn
-yarn build
 
-# bun
-bun run build
-```
 
-Locally preview production build:
+### Built With
 
-```bash
-# npm
-npm run preview
+* [![Nuxt][Nuxt.js]][Nuxt-url]
+* [![Vue][Vue.js]][Vue-url]
+* [![Rust][Rust]][Rust-url]
+* [![Quasar][Quasar.js]][Quasar-url]
+* [![Tauri][Tauri]][Tauri-url]
 
-# pnpm
-pnpm run preview
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-# yarn
-yarn preview
 
-# bun
-bun run preview
-```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ X ] Node Modules Cleanser 
+- [ ] Javascript Manager
+
+
+See the [open issues](https://github.com/Werhww/DesktopUtils/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - kleppeleo@gmail.com
+
+Project Link: [https://github.com/Werhww/DesktopUtils](https://github.com/Werhww/DesktopUtils)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* []()
+* []()
+* []()
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/Werhww/DesktopUtils.svg?style=for-the-badge
+[contributors-url]: https://github.com/Werhww/DesktopUtils/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Werhww/DesktopUtils.svg?style=for-the-badge
+[forks-url]: https://github.com/Werhww/DesktopUtils/network/members
+[stars-shield]: https://img.shields.io/github/stars/Werhww/DesktopUtils.svg?style=for-the-badge
+[stars-url]: https://github.com/Werhww/DesktopUtils/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Werhww/DesktopUtils.svg?style=for-the-badge
+[issues-url]: https://github.com/Werhww/DesktopUtils/issues
+[license-shield]: https://img.shields.io/github/license/Werhww/DesktopUtils.svg?style=for-the-badge
+[license-url]: https://github.com/Werhww/DesktopUtils/blob/master/LICENSE.txt
+[product-screenshot]: assets/images/screenshoot.png
+
+<!-- Badge and links -->
+[Nuxt.js]: https://img.shields.io/badge/nuxt-000?style=for-the-badge&logo=nuxtdotjs&logoColor=00dc82
+[Nuxt-url]: https://nuxt.com/ 
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[Rust]: https://img.shields.io/badge/rust-000?style=for-the-badge&logo=rust&color=8d4004
+[Rust-url]: https://www.rust-lang.org/
+[Quasar.js]: https://img.shields.io/badge/quasar-0091ff?style=for-the-badge&logo=quasar&logoColor=0091ff&color=050a14
+[Quasar-url]: https://quasar.dev/
+[Tauri]: https://img.shields.io/badge/tauri-242526?style=for-the-badge&logo=tauri
+[Tauri-url]: https://tauri.app/
