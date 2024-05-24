@@ -53,7 +53,7 @@ const miniState = ref(true)
 					</template>
 				</UtilDrawerButton>
 
-				<UtilDrawerButton
+				<!-- <UtilDrawerButton
 					to="/JavascriptProjectManager"
 				
 					labelFont="nico-moji"
@@ -73,7 +73,7 @@ const miniState = ref(true)
 						</QItemSection>
 					</template>
 				</UtilDrawerButton>
-
+ -->
 			</QList>
 	</QDrawer>
 

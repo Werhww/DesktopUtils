@@ -23,6 +23,7 @@ window-shadows = "0.2.2"
 sysinfo = "0.30"
 walkdir = "2"
 fs_extra = "1.2.0"
+cc = "1"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

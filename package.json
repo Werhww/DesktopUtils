@@ -3,11 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "nvmrc": "node -v > .nvmrc",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "npm run nvmrc && nuxt prepare"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.11",
