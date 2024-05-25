@@ -6,8 +6,12 @@ const search = ref("")
 </script>
 
 <template>
-<QInput v-model="search" rounded standout dense class="absolute-top-right q-mt-sm q-mr-sm" style="max-height: none;"  />
-<div class="text-h5 jacquard24">Node Module Cleanser</div>
+<QInput v-model="search" rounded standout dense class="absolute-top-right q-mt-sm q-mr-sm" style="max-height: none;" placeholder="Search"> 
+    <template v-slot:append>
+        <QIcon name="search" />
+    </template>
+</QInput>
+<div class="text-h5 jacquard24">Javascript Manager</div>
 <div class="row">
     <QBtn icon="sym_r_travel_explore" dense flat rounded >
         <QTooltip>Search entire computer</QTooltip>

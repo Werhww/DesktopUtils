@@ -3,19 +3,8 @@ use std::time::Instant;
 use walkdir::{DirEntry, WalkDir};
 use std::path::Path;
 
-use sysinfo::Disks;
+use crate::utils::list_disks;
 
-fn list_disks() -> Vec<String> {
-    println!("=> disks:");
-    let disks = Disks::new_with_refreshed_list();
-    let mut disk_name_list  = Vec::new();
-
-    for disk in disks.list() {
-        disk_name_list.push(disk.mount_point().to_string_lossy().to_string());
-    }
-
-    return disk_name_list;
-}
 
 fn is_node_modules(entry: &DirEntry) -> bool {
     let file_name = entry.file_name().to_string_lossy();
@@ -31,7 +20,6 @@ fn is_node_modules(entry: &DirEntry) -> bool {
 
     false
 }
-
 
 fn find_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
     let mut file_paths = Vec::new();

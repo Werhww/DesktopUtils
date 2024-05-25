@@ -1,6 +1,8 @@
 extern crate fs_extra;
 use fs_extra::dir::get_size;
 use std::fs::remove_dir_all;
+use sysinfo::Disks;
+
 
 #[tauri::command]
 pub fn folder_size(path: &str) -> u64 {
@@ -25,4 +27,16 @@ pub fn delete_folder(path: &str) -> bool {
             return false;
         }
     }
+}
+
+pub fn list_disks() -> Vec<String> {
+    println!("=> disks:");
+    let disks = Disks::new_with_refreshed_list();
+    let mut disk_name_list  = Vec::new();
+
+    for disk in disks.list() {
+        disk_name_list.push(disk.mount_point().to_string_lossy().to_string());
+    }
+
+    return disk_name_list;
 }
