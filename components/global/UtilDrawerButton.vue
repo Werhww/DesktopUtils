@@ -23,24 +23,46 @@ const props = withDefaults(defineProps<{
 
 const route = useRoute()
 
-const openState = computed(() => {
+type shownIcon = 'main' | 'mainOpen' | 'custom' | 'customOpen'
 
-    if(props.customOpenIcon) return route.path === props.to
+const openState = computed<shownIcon>(() => {
+    let open = route.path === props.to
 
-    if(!props.openIcon) return false 
-    return route.path === props.to
+
+    if(open == false) {
+        if(props.customIcon) {
+            return 'custom'
+        } else {
+            return 'main'
+        }
+    } else {
+        if(props.customOpenIcon && props.customIcon) {
+            return 'customOpen'
+        } else if(props.customOpenIcon) {
+            return 'mainOpen'
+        } else if(props.customIcon) {
+            return 'custom'
+        } else {
+            return 'main'
+        }
+    }
+})
+
+watch(() => openState.value, () => {
+    console.log(props.to)
+    console.log(openState.value)
 })
 </script>
 
 <template>
-<QItem clickable :to="to" v-ripple class="q-px-sm overflow-hidden" :class="{
-    'bg-accent rounded-borders': openState,
+<QItem clickable :to="to" v-ripple class="q-px-sm overflow-hidden rounded-borders" :class="{
+    'bg-accent rounded-borders': route.path === props.to,
 }" style="max-height:48px">
     <QItemSection avatar style="min-width: unset; max-height: 32px;" class="q-pr-none">
-        <QIcon size="md" v-if="!openState && !customIcon"  :name="icon" :color="iconColor" />    
-        <QIcon size="md" v-if="openState && !customOpenIcon" class="" :name="openIcon" :color="iconColor" />
-        <slot name="icon" v-if="!openState && customIcon"></slot>
-        <slot name="openIcon" v-if="openState && customOpenIcon"></slot>
+        <QIcon size="md" v-if="openState == 'main'"  :name="icon" :color="iconColor" />    
+        <QIcon size="md" v-if="openState == 'mainOpen'" class="" :name="openIcon" :color="iconColor" />
+        <slot name="icon" v-if="openState == 'custom'"></slot>
+        <slot name="openIcon" v-if="openState == 'customOpen'"></slot>
     </QItemSection>
 
     <slot name="label"></slot>

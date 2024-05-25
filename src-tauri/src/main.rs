@@ -1,6 +1,8 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use tauri_plugin_positioner::{WindowExt, Position};
+
 mod node_module_search;
 use node_module_search::list_node_modules;
 
@@ -17,6 +19,8 @@ fn main() {
 
             #[cfg(any(windows, target_os = "macos"))]
             set_shadow(&window, true).unwrap();
+
+            let _ = window.move_window(Position::TopRight);
 
             Ok(())
         })
