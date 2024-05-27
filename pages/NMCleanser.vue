@@ -8,17 +8,7 @@ import {
   QSpinnerGears
 } from 'quasar'
 
-interface SkippedFolder {
-	name: string
-	active: boolean
-}
-
-interface SkippedFolderListProps {
-	defaults: SkippedFolder[]
-	custom: SkippedFolder[]
-}
-
-const skipped_folders = useStorage<SkippedFolderListProps>("skipped_folders", { 
+const skipped_folders = useStorage<SkipFolderLists>("skipped_folders", { 
 	defaults: [
 		{
 			name: ".vscode",
@@ -85,7 +75,7 @@ async function getFolders() {
 	}, 100)
 
 
-	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkippedFolders() }).catch((error) => {
+	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkipFoldersList(skipped_folders.value) }).catch((error) => {
 		Loading.hide()
 		Notify.create({
 			message: error,
@@ -160,20 +150,6 @@ async function getFolders() {
 			icon: "warning"
 		})
 	}
-}
-
-function getSkippedFolders() {
-	let skipped_folder_names = []
-
-	for(const folder of skipped_folders.value.defaults) {
-		if(folder.active) skipped_folder_names.push(folder.name)
-	}
-
-	for(const folder of skipped_folders.value.custom) {
-		if(folder.active) skipped_folder_names.push(folder.name)
-	}
-
-	return skipped_folder_names
 }
 
 const ticked_folder_count = computed(() => {
@@ -306,7 +282,7 @@ function removeNodeModuleByLabel(tree: NodeModule[], targetLabel: string): boole
 		</QBtn>
 		<QBtn icon="settings" dense flat rounded>
 			<QMenu>
-				<NMCleanserSkippedFolderList v-model="skipped_folders" />
+				<SkippedFolder v-model="skipped_folders" />
 			</QMenu>
 		</QBtn>
 	</div>

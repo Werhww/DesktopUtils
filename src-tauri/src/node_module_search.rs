@@ -1,10 +1,8 @@
-
 use std::time::Instant;
 use walkdir::{DirEntry, WalkDir};
 use std::path::Path;
 
 use crate::utils::list_disks;
-
 
 fn is_node_modules(entry: &DirEntry) -> bool {
     let file_name = entry.file_name().to_string_lossy();

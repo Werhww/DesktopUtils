@@ -1,15 +1,5 @@
 <script setup lang="ts">
-interface SkippedFolder {
-	name: string
-	active: boolean
-}
-
-interface SkippedFolderListProps {
-	defaults: SkippedFolder[]
-	custom: SkippedFolder[]
-}
-
-const skipped_folders = defineModel<SkippedFolderListProps>({ required: true })
+const skipped_folders = defineModel<SkipFolderLists>({ required: true })
 
 </script>
 
