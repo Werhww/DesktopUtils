@@ -3,17 +3,7 @@ import FolderSearch from "@/assets/svg/folder-search.svg"
 import { invoke } from "@tauri-apps/api/tauri"
 import { useStorage } from '@vueuse/core'
 
-interface SkippedFolder {
-	name: string
-	active: boolean
-}
-
-interface SkippedFolderListProps {
-	defaults: SkippedFolder[]
-	custom: SkippedFolder[]
-}
-
-const skipped_folders = useStorage<SkippedFolderListProps>("skipped_folders", { 
+const skipped_folders = useStorage<SkipFolderLists>("skipped_folders", { 
 	defaults: [
 		{
 			name: ".vscode",
@@ -48,13 +38,31 @@ const skipped_folders = useStorage<SkippedFolderListProps>("skipped_folders", {
 	custom: []
 })
 
+interface PackageJsonItem {
+	key: string
+	value: string
+}
+
+interface Projects {
+	path: string
+	name: string
+	scripts: PackageJsonItem[]
+	dependencies: PackageJsonItem[]
+	devDependencies: PackageJsonItem[]
+}
+
 const search = ref("")
-const results = ref<string[]>([])
+const results = ref<Projects[]>([])
 
 async function searchComputer() {
 	const packageJsons = await invoke("find_package_jsons_entier_computer", { pathsToSkip: getSkipFoldersList(skipped_folders.value) }) as string[]
 
-	results.value = packageJsons
+	const projects: Projects[] = []
+
+	for(const path in packageJsons) {
+		const fileContent = await invoke("read_package_json", { filePath: path }) as string
+		console.log(fileContent)
+	}
 }
 
 function searchProjectFolder() {
@@ -94,8 +102,8 @@ function searchProjectFolder() {
 		</QBtn>
 	</div>
 
-	<div class="q-px-xs" >
-		<JavascriptManagerProjectCard v-for="path in results" :path="path" />
+	<div class="q-px-xs" ><!-- 
+		<JavascriptManagerProjectCard v-for="path in results" :path="path" /> -->
 	</div>
 </template>
 

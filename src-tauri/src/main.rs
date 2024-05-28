@@ -10,7 +10,7 @@ mod utils;
 use utils::{folder_size, delete_folder};
 
 mod javascript_manger;
-use javascript_manger::{find_package_jsons_entier_computer, find_package_jsons_in_folder};
+use javascript_manger::{find_package_jsons_entier_computer, find_package_jsons_in_folder, read_package_json};
 
 use tauri::Manager;
 use window_shadows::set_shadow;
@@ -32,7 +32,8 @@ fn main() {
             folder_size,
             delete_folder,
             find_package_jsons_entier_computer,
-            find_package_jsons_in_folder
+            find_package_jsons_in_folder,
+            read_package_json
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

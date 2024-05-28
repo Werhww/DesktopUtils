@@ -1,5 +1,5 @@
 use std::time::Instant;
-use crate::utils::list_disks;
+use crate::utils::{list_disks, read_file};
 use walkdir::{DirEntry, WalkDir};
 use std::path::Path;
 
@@ -63,4 +63,11 @@ pub fn find_package_jsons_in_folder(paths_to_skip: Vec<String>, folder: String) 
     }
 
     return file_paths;
+}
+
+#[tauri::command]
+pub fn read_package_json(file_path: &str) -> String {
+    let file_content = read_file(file_path);
+    println!("{}", file_content);
+    return file_content;
 }

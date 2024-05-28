@@ -1,6 +1,6 @@
 extern crate fs_extra;
 use fs_extra::dir::get_size;
-use std::fs::remove_dir_all;
+use std::fs::{remove_dir_all, read_to_string};
 use sysinfo::Disks;
 
 
@@ -39,4 +39,12 @@ pub fn list_disks() -> Vec<String> {
     }
 
     return disk_name_list;
+}
+
+pub fn read_file(file_path: &str) -> String {
+    let content = read_to_string(file_path).unwrap_or_else( |_| {
+        "".to_string()
+    });
+
+    return content;
 }
