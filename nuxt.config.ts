@@ -1,37 +1,32 @@
 export default defineNuxtConfig({
-  // (optional) Enable the Nuxt devtools
   devtools: { enabled: true },
-
-  // Enable SSG
+  css: ['~/assets/css/main.css'],
   ssr: false,
+  modules: [
+    "nuxt-quasar-ui",
+    "@vueuse/nuxt"
+  ],
 
   vite: {
-    // Better support for Tauri CLI output
     clearScreen: false,
-    // Enable environment variables
-    // Additional environment variables can be found at
-    // https://tauri.app/2/reference/environment-variables/
     envPrefix: ['VITE_', 'TAURI_'],
     server: {
-      // Tauri requires a consistent port
       strictPort: true,
-      // Enables the development server to be discoverable by other devices for mobile development
-      // host: '0.0.0.0',
       hmr: {
-        // Use websocket for mobile hot reloading
         protocol: 'ws',
-        // Make sure it's available on the network
-        host: '0.0.0.0',
-        // Use a specific port for hmr
+        host: '0.0.0.0',        
         port: 5183,
       },
     },
   },
 
-  modules: [
-    "nuxt-quasar-ui",
-    "@vueuse/nuxt"
-  ],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
+
 
   quasar: {
     plugins: [

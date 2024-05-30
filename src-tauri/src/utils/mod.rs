@@ -3,7 +3,6 @@ use fs_extra::dir::get_size;
 use std::fs::{remove_dir_all, read_to_string};
 use sysinfo::Disks;
 
-
 #[tauri::command]
 pub fn folder_size(path: &str) -> u64 {
     let folder_size = get_size(path).unwrap_or_else( |_| {
@@ -41,10 +40,10 @@ pub fn list_disks() -> Vec<String> {
     return disk_name_list;
 }
 
+#[tauri::command]
 pub fn read_file(file_path: &str) -> String {
-    let content = read_to_string(file_path).unwrap_or_else( |_| {
+    println!("Reading file: {}", file_path);
+    return read_to_string(file_path).unwrap_or_else( |_| {
         "".to_string()
     });
-
-    return content;
 }

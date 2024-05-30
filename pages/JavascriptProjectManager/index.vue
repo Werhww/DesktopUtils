@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import type { SavedSearch } from "@/types/JavascriptProjectManager"
 import FolderSearch from "@/assets/svg/folder-search.svg"
 import { invoke } from "@tauri-apps/api/tauri"
 import { useStorage } from '@vueuse/core'
+import {
+	Loading,
+	QSpinnerGears
+} from 'quasar'
 
 const skipped_folders = useStorage<SkipFolderLists>("skipped_folders", { 
 	defaults: [
@@ -38,36 +43,62 @@ const skipped_folders = useStorage<SkipFolderLists>("skipped_folders", {
 	custom: []
 })
 
-interface PackageJsonItem {
-	key: string
-	value: string
-}
-
-interface Projects {
-	path: string
-	name: string
-	scripts: PackageJsonItem[]
-	dependencies: PackageJsonItem[]
-	devDependencies: PackageJsonItem[]
-}
+const saved_search = useStorage<SavedSearch[]>("JSManager_saved_search", [])
 
 const search = ref("")
-const results = ref<Projects[]>([])
+
+const results = ref<string[]>([])
 
 async function searchComputer() {
+	const loadingTimer = Loading.show({
+		spinner: QSpinnerGears,
+	})
+
+	let secondsTimer = 0
+	const interval = setInterval(() => {
+		secondsTimer += 0.1
+		loadingTimer({ message: `Searching for node_modules folders... ${secondsTimer.toFixed(1)}s` })
+	}, 100)
+	
+	cleansSavedSearches()
+	results.value = []
 	const packageJsons = await invoke("find_package_jsons_entier_computer", { pathsToSkip: getSkipFoldersList(skipped_folders.value) }) as string[]
+	
+	results.value = packageJsons
+	saveSearch(packageJsons, true)
 
-	const projects: Projects[] = []
+	clearInterval(interval)
+	Loading.hide()
+}
 
-	for(const path in packageJsons) {
-		const fileContent = await invoke("read_package_json", { filePath: path }) as string
-		console.log(fileContent)
+function saveSearch(paths: string[], fullSearch: boolean) {
+	saved_search.value.push({
+		id: Math.random().toString(36).substring(7),
+		name: `${fullSearch ? "Full pc search" : "Folder search" } ${new Date().toISOString()}`,
+		datetime: new Date().toISOString(),
+		keep: false,
+		projectPaths: paths
+	})
+}
+
+function cleansSavedSearches() {
+	const now = new Date()
+	const savedSearches = saved_search.value
+	for(const search of savedSearches) {
+		const datetime = new Date(search.datetime)
+		const diff = now.getTime() - datetime.getTime()
+		if(diff > 1000 * 60 * 60 * 24 * 7) {
+			saved_search.value = savedSearches.filter(s => s.id !== search.id)
+		}
 	}
+
 }
 
 function searchProjectFolder() {
 	console.log("searchProjectFolder")
 }
+
+cleansSavedSearches()
 </script>
 
 <template>
@@ -94,6 +125,11 @@ function searchProjectFolder() {
 		</QBtn>
 		<QBtn icon="sym_r_history" dense flat rounded>
 			<QTooltip>Search history</QTooltip>
+			<QMenu>
+				<JavascriptManagerSearchHistory @openSearch="(v) => {
+					results = v.projectPaths
+				}" />
+			</QMenu>
 		</QBtn>
 		<QBtn icon="settings" dense flat rounded>
 			<QMenu>
@@ -102,8 +138,8 @@ function searchProjectFolder() {
 		</QBtn>
 	</div>
 
-	<div class="q-px-xs" ><!-- 
-		<JavascriptManagerProjectCard v-for="path in results" :path="path" /> -->
+	<div class="q-px-xs q-pt-sm q-gutter-y-sm" >
+		<JavascriptManagerProjectCard v-for="path in results" :path="path" :search="search" />
 	</div>
 </template>
 

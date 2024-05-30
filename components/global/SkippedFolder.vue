@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const skipped_folders = defineModel<SkipFolderLists>({ required: true })
-
 </script>
 
 <template>
@@ -14,7 +13,7 @@ const skipped_folders = defineModel<SkipFolderLists>({ required: true })
 		<QItemSection class="text-overline">Defaults folders</QItemSection>
 	</QItem>
 
-	<QItem v-rippel clickable dense v-for="folder in skipped_folders.defaults">
+	<QItem clickable dense v-for="folder in skipped_folders.defaults">
 		<QItemSection avatar><QToggle dense v-model="folder.active" color="light-green-13" /></QItemSection>
 		<QItemSection @click="folder.active = !folder.active" :class="{'dimmed-real': !folder.active }" >{{ folder.name }}</QItemSection>
 		<QItemSection side><QIcon name="delete" class="disabled"  /></QItemSection>
@@ -27,7 +26,7 @@ const skipped_folders = defineModel<SkipFolderLists>({ required: true })
 		}" /></QItemSection>
 	</QItem>
 
-	<QItem v-rippel clickable dense v-for="(folder, index) in skipped_folders.custom">
+	<QItem clickable dense v-for="(folder, index) in skipped_folders.custom">
 		<QItemSection avatar><QToggle dense v-model="folder.active" color="light-green-13" /></QItemSection>
 		<QItemSection :class="{'dimmed-real': !folder.active }" >
 			{{ folder.name }} 

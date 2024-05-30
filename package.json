@@ -1,7 +1,8 @@
 {
-  "name": "nuxt-app",
+  "name": "desktop-utils",
   "private": true,
   "type": "module",
+  "version": "1.0.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -23,6 +24,9 @@
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.12"
+    "@tauri-apps/cli": "^1.5.12",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
   }
 }
