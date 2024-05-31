@@ -1,3 +1,5 @@
+import { invoke } from "@tauri-apps/api/tauri"
+
 export interface SavedSearch {
 	id: string
 	name: string
@@ -30,5 +32,27 @@ export interface PackageJson {
     optionalDependencies: { [key: string]: string };
     engines: { [key: string]: string };
     private: boolean;
+}
+
+export async function readPackageJson(path: string): Promise<Projects | "error"> {
+	const fileContent = await invoke("read_file", { filePath: path }) as string
+
+    if(fileContent === "") {
+        Notify.create({
+			message: "Error reading file, file may be empty or not found.",
+			color: "negative",
+			position: "top",
+			icon: "error"
+		})
+        
+        return "error"
+    }
+
+	const packageJson = JSON.parse(fileContent)
+
+	return {
+        path: path,
+        data: packageJson,
+    }
 }
   

@@ -42,7 +42,7 @@ defineEmits<{
 </script>
 
 <template>
-<QList>
+<QList style="min-width: 430px;">
     <QItem dense class="q-pb-none">
         <QItemSection class="text-h6">
             Search history
@@ -68,12 +68,14 @@ defineEmits<{
         </QItemSection>
     </QItem>
 
+    <QSeparator inset />
+
     <QItem v-for="(search, index) in saved_search" :key="search.id" clickable dense>
         <QMenu cover class="no-shadow" separate-close-popup>
             <QItem>
                 <QItemSection side class="items-center q-pl-xs" >
                     <div>Keep</div>
-                    <QCheckbox v-model="search.keep" dense color="green" />
+                    <QCheckbox v-model="search.keep" dense color="green" size="xs" />
                 </QItemSection>
                 <QItemSection>
                     <QInput v-model="search.name" dense />
@@ -87,7 +89,7 @@ defineEmits<{
         <QItemSection side >
             <QCheckbox v-model="saved_searches_checkbox_list[index]" color="blue-10" />
         </QItemSection>
-        <QItemSection v-close-popup @click="$emit('openSearch', search)">
+        <QItemSection class="ellipsis" v-close-popup @click="$emit('openSearch', search)">
             {{ search.name }}
         </QItemSection>
         <QItemSection side >

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { SavedSearch } from "@/types/JavascriptProjectManager"
+import type { SavedSearch } from "@/utils/modules/JavascriptProjectManager"
 import FolderSearch from "@/assets/svg/folder-search.svg"
 import { invoke } from "@tauri-apps/api/tauri"
 import { useStorage } from '@vueuse/core'
 import {
+	Notify,
 	Loading,
 	QSpinnerGears
 } from 'quasar'
@@ -44,6 +45,7 @@ const skipped_folders = useStorage<SkipFolderLists>("skipped_folders", {
 })
 
 const saved_search = useStorage<SavedSearch[]>("JSManager_saved_search", [])
+const last_search_id = useStorage<string>("JSManager_last_search_id", '')
 
 const search = ref("")
 
@@ -57,7 +59,7 @@ async function searchComputer() {
 	let secondsTimer = 0
 	const interval = setInterval(() => {
 		secondsTimer += 0.1
-		loadingTimer({ message: `Searching for node_modules folders... ${secondsTimer.toFixed(1)}s` })
+		loadingTimer({ message: `Searching for package.json... ${secondsTimer.toFixed(1)}s` })
 	}, 100)
 	
 	cleansSavedSearches()
@@ -72,8 +74,10 @@ async function searchComputer() {
 }
 
 function saveSearch(paths: string[], fullSearch: boolean) {
+	const id = Math.random().toString(36).substring(7)
+	last_search_id.value = id
 	saved_search.value.push({
-		id: Math.random().toString(36).substring(7),
+		id: id,
 		name: `${fullSearch ? "Full pc search" : "Folder search" } ${new Date().toISOString()}`,
 		datetime: new Date().toISOString(),
 		keep: false,
@@ -98,7 +102,22 @@ function searchProjectFolder() {
 	console.log("searchProjectFolder")
 }
 
+onMounted(() => {
+	if(last_search_id.value) {
+		const search = saved_search.value.find(s => s.id === last_search_id.value)
+		if(search) {
+			Notify.create({
+				message: `Opened: ${search.name}`,
+				color: "primary",
+				position: "top",
+				timeout: 2000
+			})
+			results.value = search.projectPaths
+		}
+	}
+})
 cleansSavedSearches()
+
 </script>
 
 <template>
@@ -125,9 +144,10 @@ cleansSavedSearches()
 		</QBtn>
 		<QBtn icon="sym_r_history" dense flat rounded>
 			<QTooltip>Search history</QTooltip>
-			<QMenu>
+			<QMenu max-width="430px">
 				<JavascriptManagerSearchHistory @openSearch="(v) => {
 					results = v.projectPaths
+					last_search_id = v.id
 				}" />
 			</QMenu>
 		</QBtn>
