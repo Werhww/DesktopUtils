@@ -254,7 +254,7 @@ function removeNodeModuleByLabel(tree: NodeModule[], targetLabel: string): boole
 </script>
 
 <template>
-	<div class="text-h5 nico-moji">Node Module Cleanser</div>
+	<div class="text-h4 nico-moji">Node Module Cleanser</div>
 	<div>
 		<QChip
 			icon="folder_copy"

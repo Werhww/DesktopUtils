@@ -1,5 +1,3 @@
-import { is } from "quasar";
-
 export function getSkipFoldersList(list: SkipFolderLists): string[] {
 	let skipped_folder_names = []
 

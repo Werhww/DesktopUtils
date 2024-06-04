@@ -1,3 +1,5 @@
+import { extend } from 'quasar';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [

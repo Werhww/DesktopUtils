@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "version": "1.0.0",
+  "description": "Desktop utilities",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

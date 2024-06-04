@@ -107,7 +107,7 @@ onMounted(() => {
 		const search = saved_search.value.find(s => s.id === last_search_id.value)
 		if(search) {
 			Notify.create({
-				message: `Opened: ${search.name}`,
+				message: `Loaded search: ${search.name}`,
 				color: "primary",
 				position: "top",
 				timeout: 2000
@@ -134,7 +134,7 @@ cleansSavedSearches()
 			<QIcon name="search" />
 		</template>
 	</QInput>
-	<div class="text-h5 jacquard24">Javascript Manager</div>
+	<div class="text-h4 jacquard24">Javascript Manager</div>
 	<div class="row">
 		<QBtn icon="sym_r_travel_explore" dense flat rounded @click="searchComputer">
 			<QTooltip>Search entire computer</QTooltip>

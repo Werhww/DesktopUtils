@@ -19,6 +19,8 @@ export interface PackageJson {
     version: string;
     description: string;
     main: string;
+    types: string,
+    directories: { [key: string]: string };
     scripts: { [key: string]: string };
     repository: { type: string; url: string };
     keywords: string[];

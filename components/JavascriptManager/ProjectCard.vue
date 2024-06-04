@@ -65,7 +65,7 @@ main()
 
 <template>
 <JavascriptManagerProjectCardSkeleton v-if="loading" />
-<QCard v-show="show" flat class="cursor-pointer bg-neutral-900 hover:bg-slate-700 ease-out duration-300" @click="router.push(`/JavascriptProjectManager/${path}`)">
+<QCard v-show="show" flat class="cursor-pointer bg-neutral-900 hover:bg-slate-700 ease-out duration-300" @click="router.push(`/JavascriptProjectManager/${encodeURIComponent(path)}`)">
     <QCardSection>
         <div class="row items-center q-gutter-x-sm"><div class="text-h6" v-html="nameEl"></div> <QBadge v-if="!!project?.data.version" style="height: fit-content;" color="red-10">{{ project?.data.version }}</QBadge></div>
         <div class="text-caption text-grey-5 text-weight-medium" v-html="pathEl"></div>
