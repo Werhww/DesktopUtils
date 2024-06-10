@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { QInput } from 'quasar';
+
 defineProps<{
 	icon: string
 	overline: string
@@ -8,13 +10,28 @@ defineProps<{
 }>()
 
 const value = defineModel<string | undefined>({ required: true })
-defineEmits<{
-	addProperty: [property: string]
-}>()
+const edit = ref(true)
+
+const input = ref<QInput | null>(null)
+
+function editProperty() {
+	edit.value = !edit.value
+
+	/* if(edit.value) {
+		setTimeout(() => {
+			input.value?.focus()
+		}, 100)
+	} */
+
+	setTimeout(() => {
+			input.value?.focus()
+		}, 10)
+
+}
 </script>
 
 <template>
-	<QItem clickable class="group">
+	<QItem clickable class="group" @click="editProperty">
 		<QItemSection side>
 			<QIcon :name="icon" class="group-hover:text-blue-300" />
 		</QItemSection>
@@ -31,19 +48,18 @@ defineEmits<{
                 <QTooltip> {{ info }} </QTooltip>
                 </QIcon>
 			</QItemLabel>
-			<QItemLabel class="group-hover:text-blue-300">{{
-				value ? value : "Missing property"
-			}}</QItemLabel>
+			<QItemLabel>
+				<QInput ref="input" color="blue-10" :disable="edit" :borderless="edit" placeholder="Missing property" dense v-model="value" :mask="mask" @blur="() => {
+					edit = true
+				}"  />
+			</QItemLabel>
 		</QItemSection>
 		<QItemSection
 			side
 			class="duration-300 opacity-0 group-hover:opacity-100"
 		>
-			<QIcon v-if="value" name="edit">
-				<QTooltip>Edit property</QTooltip>
-			</QIcon>
-			<QIcon v-else name="add" @click="$emit('addProperty', property)">
-				<QTooltip>Add property</QTooltip>
+			<QIcon name="edit">
+				<QTooltip>Edit</QTooltip>
 			</QIcon>
 		</QItemSection>
 	</QItem>
