@@ -14,25 +14,45 @@ export interface Projects {
     data: Partial<PackageJson>
 }
 
-export interface PackageJson {
-    name: string;
-    version: string;
-    description: string;
-    main: string;
-    types: string,
+export interface PackageJson extends SimpleField {
     directories: { [key: string]: string };
     scripts: { [key: string]: string };
-    repository: { type: string; url: string };
-    keywords: string[];
-    author: string;
-    license: string;
-    bugs: { url: string };
-    homepage: string;
     dependencies: { [key: string]: string };
     devDependencies: { [key: string]: string };
     peerDependencies: { [key: string]: string };
     optionalDependencies: { [key: string]: string };
     engines: { [key: string]: string };
+    repository: string | { type: string, url: string };
+    
+    keywords: string[];
+    bugs: { url: string, email: string };
+
+    contributors: {
+        name: string;
+        email?: string;
+        url?: string;
+    }[]
+
+    funding: funding
+
+    files: string[];
+    bin: { [key: string]: string } | string;
+}
+
+// Types for the funding field in package.json
+export type funding = Array<{ type: string, url: string } | string> | string | { type: string, url: string };
+
+
+interface SimpleField {
+    name: string;
+    description: string;
+    version: string;
+    
+    author: string;
+    license: string;
+    homepage: string;
+    
+    main: string;
     private: boolean;
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "desktop-utils",
-  "private": true,
+  "private": "true",
   "type": "module",
   "version": "1.0.0",
   "description": "Desktop utilities",

@@ -47,11 +47,6 @@ const openState = computed<shownIcon>(() => {
         }
     }
 })
-
-watch(() => openState.value, () => {
-    console.log(props.to)
-    console.log(openState.value)
-})
 </script>
 
 <template>

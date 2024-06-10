@@ -101,7 +101,7 @@ function cleansSavedSearches() {
 function searchProjectFolder() {
 	console.log("searchProjectFolder")
 }
-
+ 
 onMounted(() => {
 	if(last_search_id.value) {
 		const search = saved_search.value.find(s => s.id === last_search_id.value)
@@ -110,7 +110,7 @@ onMounted(() => {
 				message: `Loaded search: ${search.name}`,
 				color: "primary",
 				position: "top",
-				timeout: 2000
+				timeout: 200
 			})
 			results.value = search.projectPaths
 		}

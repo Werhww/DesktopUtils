@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { Projects } from "@/utils/modules/JavascriptProjectManager"
 import { readPackageJson } from "@/utils/modules/JavascriptProjectManager"
-import {
-  Notify,
-} from 'quasar'
 
 const router = useRouter()
 
@@ -66,9 +63,24 @@ main()
 <template>
 <JavascriptManagerProjectCardSkeleton v-if="loading" />
 <QCard v-show="show" flat class="cursor-pointer bg-neutral-900 hover:bg-slate-700 ease-out duration-300" @click="router.push(`/JavascriptProjectManager/${encodeURIComponent(path)}`)">
-    <QCardSection>
-        <div class="row items-center q-gutter-x-sm"><div class="text-h6" v-html="nameEl"></div> <QBadge v-if="!!project?.data.version" style="height: fit-content;" color="red-10">{{ project?.data.version }}</QBadge></div>
-        <div class="text-caption text-grey-5 text-weight-medium" v-html="pathEl"></div>
+    <QCardSection horizontal>
+        <QCardSection>
+            <div class="row items-center q-gutter-x-sm"><div class="text-h6" v-html="nameEl"></div> <QBadge v-if="!!project?.data.version" style="height: fit-content;" color="red-10">{{ project?.data.version }}</QBadge></div>
+            <div class="text-caption text-grey-5 text-weight-medium" v-html="pathEl"></div>
+        </QCardSection>
+        <QSpace />
+        <QCardSection class="row items-center">
+            <QIcon v-if="project?.data.private == true" name="lock" size="sm">
+                <QTooltip>
+                    Private
+                </QTooltip>
+            </QIcon>
+            <QIcon v-else name="public" size="sm">
+                <QTooltip>
+                    Public
+                </QTooltip>
+            </QIcon>
+        </QCardSection>
     </QCardSection>
 </QCard>
 </template>
