@@ -25,6 +25,7 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
+
   },
 
 
@@ -58,6 +59,11 @@ export default defineNuxtConfig({
         "material-icons",
         "line-awesome",
         "fontawesome-v6"
+      ],
+
+      animations: [
+        "fadeIn",
+        "fadeOut"
       ],
     },
 
