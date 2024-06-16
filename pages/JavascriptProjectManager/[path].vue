@@ -4,6 +4,7 @@ import type {
 } from "@/utils/modules/JavascriptProjectManager"
 import { readPackageJson } from "@/utils/modules/JavascriptProjectManager"
 
+
 const router = useRouter()
 const { path } = useRoute().params
 
@@ -64,7 +65,7 @@ main()
 		</div>
 	</div>
 	<div v-if="project">
-		<div class="text-h4 text-capitalize">{{ project.data.name }}</div>
+		<div class="text-h4">{{ project.data.name }}</div>
 		<div class="text-underline text-grey-5 text-weight-medium">
 			{{ project.path }}
 		</div>

@@ -3,6 +3,9 @@ use fs_extra::dir::get_size;
 use std::fs::{remove_dir_all, read_to_string};
 use sysinfo::Disks;
 
+mod file_explore;
+pub use file_explore::get_dir_files;
+
 #[tauri::command]
 pub fn folder_size(path: &str) -> u64 {
     let folder_size = get_size(path).unwrap_or_else( |_| {

@@ -1,19 +1,13 @@
 <script setup lang="ts">
-import { show } from "@tauri-apps/api/app"
-import { QDialog } from "quasar"
 import type { Projects } from "~/utils/modules/JavascriptProjectManager"
 const project = defineModel<Projects>({ required: true })
+const folderPath = computed(() => {
+	const pathArr = project.value.path.split(/[\\\/]/)
+
+	return pathArr.slice(0, pathArr.length - 1).join("/")
+})
 
 const editOpen = ref(false)
-interface editValues {
-	icon: string
-	label: string
-	hint: string
-	extra?: string
-	value: Ref<string | undefined>
-	open: Ref<boolean>
-}
-
 const property = ref({
 	value: ref<string | undefined>(),
 	open: ref(false),
@@ -62,8 +56,12 @@ function closeEdit() {
 	property.value.open = ref(false)
 }
 
-/* Dialogs */
+
+
+/* Custom stuff */
 const licenseDialog = ref(false)
+
+const mainFileDialog = ref(false)
 </script>
 
 <template>
@@ -100,6 +98,14 @@ const licenseDialog = ref(false)
 			@edit="openEdit"
 			@close="closeEdit"
 		/>
+		<JavascriptManagerMainsProperty
+			v-model="project.data.main"
+			icon="sym_r_draft"
+			label="Main"
+			hint="The entry point of the project"
+			@edit="openEdit"
+			@close="closeEdit"
+		/>
 	</div>
 	<QSlideTransition>
 		<div v-if="editOpen" class="mx-6">
@@ -119,7 +125,9 @@ const licenseDialog = ref(false)
 					</div>
 				</TransitionGroup>
 			</div>
-			<QInput dense v-model="property.value" :hint="property.hint" />
+			
+			<QBtn v-if="property.label == 'Main'" dense :label="property.hint" @click="mainFileDialog = true" />
+			<QInput v-else dense v-model="property.value" :hint="property.hint" />
 			<TransitionGroup
 				enter-active-class="animated fadeInDown"
 				leave-active-class="animated fadeOutUp"
@@ -144,6 +152,12 @@ const licenseDialog = ref(false)
 						class="w-full h-full"
 					></iframe>
 				</QCard>
+			</QDialog>
+			<QDialog v-model="mainFileDialog">
+				<FileExplorer 
+					:path="folderPath"
+					:pathsToSkip="['node_modules', '.git']"
+				/>
 			</QDialog>
 		</div>
 	</QSlideTransition>

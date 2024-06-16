@@ -7,7 +7,7 @@ mod node_module_search;
 use node_module_search::list_node_modules;
 
 mod utils;
-use utils::{folder_size, delete_folder, read_file};
+use utils::{folder_size, delete_folder, read_file, get_dir_files};
 
 mod javascript_manger;
 use javascript_manger::{find_package_jsons_entier_computer, find_package_jsons_in_folder};
@@ -33,7 +33,8 @@ fn main() {
             delete_folder,
             find_package_jsons_entier_computer,
             find_package_jsons_in_folder,
-            read_file
+            read_file,
+            get_dir_files
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,7 +1,7 @@
-use std::time::Instant;
-use crate::utils::{list_disks};
-use walkdir::{DirEntry, WalkDir};
+use crate::utils::list_disks;
 use std::path::Path;
+use std::time::Instant;
+use walkdir::{DirEntry, WalkDir};
 
 fn is_package_json(entry: &DirEntry) -> bool {
     let file_name = entry.file_name().to_string_lossy();
@@ -18,25 +18,31 @@ fn is_package_json(entry: &DirEntry) -> bool {
     false
 }
 
-
 #[tauri::command]
 pub fn find_package_jsons_entier_computer(paths_to_skip: Vec<String>) -> Vec<String> {
     let start_time = Instant::now();
     println!("=> node_modules:");
 
     let mut file_paths = Vec::new();
- 
+
     let directorys = list_disks();
 
     for directory in directorys {
         for entry in WalkDir::new(directory)
-        .into_iter()
-        .filter_entry(|e| -> bool {
-            !paths_to_skip.contains(&e.path().file_name().unwrap_or(std::ffi::OsStr::new("")).to_string_lossy().to_string())
-        })
-        .filter_map(Result::ok)
-        .filter(is_package_json) {
-        println!("{}", entry.path().display());
+            .into_iter()
+            .filter_entry(|e| -> bool {
+                !paths_to_skip.contains(
+                    &e.path()
+                        .file_name()
+                        .unwrap_or(std::ffi::OsStr::new(""))
+                        .to_string_lossy()
+                        .to_string(),
+                )
+            })
+            .filter_map(Result::ok)
+            .filter(is_package_json)
+        {
+            println!("{}", entry.path().display());
             file_paths.push(entry.path().display().to_string());
         }
     }
@@ -50,15 +56,22 @@ pub fn find_package_jsons_entier_computer(paths_to_skip: Vec<String>) -> Vec<Str
 #[tauri::command]
 pub fn find_package_jsons_in_folder(paths_to_skip: Vec<String>, folder: String) -> Vec<String> {
     let mut file_paths = Vec::new();
- 
+
     for entry in WalkDir::new(folder)
-    .into_iter()
-    .filter_entry(|e| -> bool {
-        !paths_to_skip.contains(&e.path().file_name().unwrap_or(std::ffi::OsStr::new("")).to_string_lossy().to_string())
-    })
-    .filter_map(Result::ok)
-    .filter(is_package_json) {
-    println!("{}", entry.path().display());
+        .into_iter()
+        .filter_entry(|e| -> bool {
+            !paths_to_skip.contains(
+                &e.path()
+                    .file_name()
+                    .unwrap_or(std::ffi::OsStr::new(""))
+                    .to_string_lossy()
+                    .to_string(),
+            )
+        })
+        .filter_map(Result::ok)
+        .filter(is_package_json)
+    {
+        println!("{}", entry.path().display());
         file_paths.push(entry.path().display().to_string());
     }
 
