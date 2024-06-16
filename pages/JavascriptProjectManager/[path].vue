@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type {
 	Projects,
-	PackageJson,
 } from "@/utils/modules/JavascriptProjectManager"
 import { readPackageJson } from "@/utils/modules/JavascriptProjectManager"
-import { show } from "@tauri-apps/api/app"
 
 const router = useRouter()
 const { path } = useRoute().params
@@ -34,38 +32,6 @@ async function main() {
 
 	loading.value = false
 }
-
-const mainPropsEdit = ref({
-    show: false,
-    label: "",
-    info: "",
-    value: ref(),
-    openState: ref(false),
-})
-
-const mainPropsTooltip = ref({
-	show: false,
-	message: "",
-})
-
-function openMainPropsEdit(value: Ref<string | undefined>, label: string, open: Ref<boolean>, info: string = "") {
-    mainPropsEdit.value.openState = false
-
-    mainPropsEdit.value.show = true
-    mainPropsEdit.value.label = label
-    mainPropsEdit.value.info = info
-    // @ts-ignore
-    mainPropsEdit.value.value = value
-    // @ts-ignore
-    mainPropsEdit.value.openState = open
-    open.value = true
-}
-
-function closeMainPropsEdit() {
-    mainPropsEdit.value.show = false
-    mainPropsEdit.value.openState = false
-}
-
 
 main()
 </script>
@@ -103,59 +69,10 @@ main()
 			{{ project.path }}
 		</div>
 
-		<div class="grid grid-cols-5 mt-3 relative">
-			<JavascriptManagerBasicProperty
-				icon="sym_r_description"
-				label="Description"
-				v-model="project.data.description"
-                @editProperty="openMainPropsEdit"
-                @close="closeMainPropsEdit"
-                info="A short description of the project"
-			/>
-			<JavascriptManagerBasicProperty
-				defaultValue="Your Name <example@email.com> (https://yourwebsite.com)"
-				icon="sym_r_signature"
-				label="Author"
-				v-model="project.data.author"
-                @editProperty="openMainPropsEdit"
-                @close="closeMainPropsEdit"
-                info="The author of the project"
-			/>
-			<JavascriptManagerBasicProperty
-				icon="sym_r_license"
-				label="License"
-				v-model="project.data.license"
-                @editProperty="openMainPropsEdit"
-                @close="closeMainPropsEdit"
-                info="The license type of the project"
-			/>
-			<JavascriptManagerBasicProperty
-				icon="sym_r_house"
-				label="Homepage"
-				v-model="project.data.homepage"
-                @editProperty="openMainPropsEdit"
-                @close="closeMainPropsEdit"
-                info="The URL to the project homepage"
-			/>
-
-			<!-- TODO - Change to open file explorer, plus get relative path, eks: "./main.js" -->
-			<JavascriptManagerBasicProperty
-               
-                
-				icon="sym_r_draft"
-				label="Main"
-				v-model="project.data.main"
-			/>
-		</div>
-		<QSlideTransition>
-            <div v-show="mainPropsEdit.show" class="mx-6">
-                <div class="text-h6">{{ mainPropsEdit.label }}</div>
-                <QInput dense v-model="mainPropsEdit.value" :hint="mainPropsEdit.info" />
-            </div>
-        </QSlideTransition>
+		<JavascriptManagerMainsBody 
+			v-model="project"
+		/>
 	</div>
-
-	<!-- {{ project }} -->
 </template>
 
 <style scoped lang="scss"></style>
