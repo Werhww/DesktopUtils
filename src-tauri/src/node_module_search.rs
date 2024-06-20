@@ -1,4 +1,3 @@
-use std::time::Instant;
 use walkdir::{DirEntry, WalkDir};
 use std::path::Path;
 
@@ -19,7 +18,8 @@ fn is_node_modules(entry: &DirEntry) -> bool {
     false
 }
 
-fn find_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
+#[tauri::command]
+pub async fn find_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
     let mut file_paths = Vec::new();
  
     let directorys = list_disks();
@@ -38,15 +38,4 @@ fn find_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
     }
 
     return file_paths;
-}
-
-#[tauri::command]
-pub fn list_node_modules(paths_to_skip: Vec<String>) -> Vec<String> {
-    let start_time = Instant::now();
-    println!("=> node_modules:");
-    let paths = find_node_modules(paths_to_skip);
-    let end_time = Instant::now();
-    println!("Elapsed time: {:?}", end_time - start_time);
-
-    return paths;
 }

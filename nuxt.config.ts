@@ -32,6 +32,7 @@ export default defineNuxtConfig({
   quasar: {
     plugins: [
       "Loading",
+      "LoadingBar",
       "Notify"
     ],
 

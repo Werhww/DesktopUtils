@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Projects } from "~/utils/modules/JavascriptProjectManager"
+
 const project = defineModel<Projects>({ required: true })
 const folderPath = computed(() => {
 	const pathArr = project.value.path.split(/[\\\/]/)
@@ -154,9 +155,10 @@ const mainFileDialog = ref(false)
 				</QCard>
 			</QDialog>
 			<QDialog v-model="mainFileDialog">
-				<FileExplorer 
+				<FileExplorer
 					:path="folderPath"
-					:pathsToSkip="['node_modules', '.git']"
+					undertitle="Select the main file"
+					:pathsToSkip="['node_modules', '.git', '.vscode', '.nuxt', '.gitignore']"
 				/>
 			</QDialog>
 		</div>

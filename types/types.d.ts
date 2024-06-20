@@ -8,6 +8,12 @@ declare global {
 		defaults: SkipFolderItem[]
 		custom: SkipFolderItem[]
 	}
+
+	interface FileExplorerItem {
+		name: string
+		path: string
+		children: FileExplorerItem[]
+	}
 }
 
 export {};

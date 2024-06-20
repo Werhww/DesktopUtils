@@ -1,7 +1,7 @@
 use walkdir::WalkDir;
 
 #[tauri::command]
-pub fn get_dir_files(path: &str, paths_to_skip: Vec<String>) -> Vec<String> {
+pub async fn get_dir_files(path: String, paths_to_skip: Vec<String>) -> Vec<String> {
     println!("Reading files in: {}", path);
 
     let mut file_paths = Vec::new();

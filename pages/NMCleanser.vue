@@ -75,7 +75,7 @@ async function getFolders() {
 	}, 100)
 
 
-	const node_modules = await invoke("list_node_modules", { pathsToSkip: getSkipFoldersList(skipped_folders.value) }).catch((error) => {
+	const node_modules = await invoke("find_node_modules", { pathsToSkip: getSkipFoldersList(skipped_folders.value) }).catch((error) => {
 		Loading.hide()
 		Notify.create({
 			message: error,
@@ -96,7 +96,7 @@ async function getFolders() {
 	expanded.value = []
 
 	node_modules.forEach((path, bigIndex) => {
-		const pathArr = path.split(/[\\\/]/)
+		const pathArr = splitFilePath(path)
 		let current: any = tree
 
 		const name = `${pathArr[pathArr.length - 2]}#--#${bigIndex}`

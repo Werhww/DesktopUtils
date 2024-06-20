@@ -12,6 +12,10 @@ export function getSkipFoldersList(list: SkipFolderLists): string[] {
 	return skipped_folder_names
 }
 
+export function splitFilePath(path: string): string[] {
+	return path.split(/[\\\/]/)
+}
+
 export function highlightSearchTerm(text: string, searchTerm: string) {
 	const normalizedTitle = String(text).toLowerCase();
     const normalizedSearchTerm = String(searchTerm).toLowerCase();

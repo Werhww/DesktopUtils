@@ -17,6 +17,16 @@ pub fn folder_size(path: &str) -> u64 {
 }
 
 #[tauri::command]
+pub fn file_size(path: &str) -> u64 {
+    let file_size = get_size(path).unwrap_or_else( |_| {
+        0
+    });
+    
+    println!("Folder size: {}", file_size);
+    return file_size;   
+}
+
+#[tauri::command]
 pub fn delete_folder(path: &str) -> bool {
     let result = remove_dir_all(path);
     match result {

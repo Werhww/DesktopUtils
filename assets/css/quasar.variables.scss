@@ -35,23 +35,26 @@ $typography-font-family: 'Inter', sans-serif;
 }
 
 .scroller {
-  /* width */
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
   }
 
-  /* Track */
   ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: transparent;
   }
-
-  /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #888;
+    border-radius: 2px;
   }
 
-  /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+}
+
+.scroller-hidden {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 0px;
   }
 }
