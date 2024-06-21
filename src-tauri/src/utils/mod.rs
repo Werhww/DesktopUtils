@@ -7,23 +7,13 @@ mod file_explore;
 pub use file_explore::get_dir_files;
 
 #[tauri::command]
-pub fn folder_size(path: &str) -> u64 {
-    let folder_size = get_size(path).unwrap_or_else( |_| {
+pub fn path_size(path: &str) -> u64 {
+    let size = get_size(path).unwrap_or_else( |_| {
         0
     });
     
-    println!("Folder size: {}", folder_size);
-    return folder_size;   
-}
-
-#[tauri::command]
-pub fn file_size(path: &str) -> u64 {
-    let file_size = get_size(path).unwrap_or_else( |_| {
-        0
-    });
-    
-    println!("Folder size: {}", file_size);
-    return file_size;   
+    println!("Folder size: {}", size);
+    return size;   
 }
 
 #[tauri::command]

@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 const fileSize = computedAsync(async () => {
-    const size = await invoke("file_size", { path: props.item.path }) as number
+    const size = await invoke("path_size", { path: props.item.path }) as number
     
     let size_type = "Bytes"
 	let full_size_formated = size
@@ -28,7 +28,7 @@ const fileSize = computedAsync(async () => {
 
 
 
-	return `${full_size_formated.toFixed(size_type == "MB" ? 0 : 2)} ${size_type}`
+	return `${full_size_formated.toFixed(size_type == "MB" || size_type == "Bytes" ? 0 : 2)} ${size_type}`
 })
 
 </script>

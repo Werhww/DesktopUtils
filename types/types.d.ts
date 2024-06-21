@@ -12,6 +12,7 @@ declare global {
 	interface FileExplorerItem {
 		name: string
 		path: string
+		type: 'file' | 'folder'
 		children: FileExplorerItem[]
 	}
 }

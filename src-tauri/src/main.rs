@@ -7,7 +7,7 @@ mod node_module_search;
 use node_module_search::find_node_modules;
 
 mod utils;
-use utils::{folder_size, delete_folder, read_file, file_size,get_dir_files};
+use utils::{path_size, delete_folder, read_file,get_dir_files};
 
 mod javascript_manger;
 use javascript_manger::{find_package_jsons_entier_computer, find_package_jsons_in_folder};
@@ -29,12 +29,11 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             find_node_modules,
-            folder_size,
+            path_size,
             delete_folder,
             find_package_jsons_entier_computer,
             find_package_jsons_in_folder,
             read_file,
-            file_size,
             get_dir_files
         ])
         .run(tauri::generate_context!())

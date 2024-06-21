@@ -100,7 +100,7 @@ async function getFolders() {
 		let current: any = tree
 
 		const name = `${pathArr[pathArr.length - 2]}#--#${bigIndex}`
-		invoke("folder_size", { path }).then((size: any) => {
+		invoke("path_size", { path }).then((size: any) => {
 			const folder_index = node_modules_info.value.findIndex(folder => folder.label === name)
 			node_modules_info.value[folder_index].size = size
 		})

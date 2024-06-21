@@ -156,6 +156,8 @@ const mainFileDialog = ref(false)
 			</QDialog>
 			<QDialog v-model="mainFileDialog">
 				<FileExplorer
+					folderSelect
+					multiple
 					:path="folderPath"
 					undertitle="Select the main file"
 					:pathsToSkip="['node_modules', '.git', '.vscode', '.nuxt', '.gitignore']"
