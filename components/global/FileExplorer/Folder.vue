@@ -12,6 +12,7 @@ const props = withDefaults(
 )
 
 const selectedPath = defineModel<FileExplorerItem[]>()
+
 const containsFolder = props.item.children.some(
 	(child) => child.type === "folder"
 )

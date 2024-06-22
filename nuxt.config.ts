@@ -64,7 +64,8 @@ export default defineNuxtConfig({
 
       animations: [
         "fadeOutUp",
-        "fadeInDown"
+        "fadeInDown",
+        "shakeX"
       ],
     },
 
